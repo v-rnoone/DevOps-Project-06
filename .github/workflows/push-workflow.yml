@@ -1,0 +1,17 @@
+name: pipeline2
+on:
+    push:
+        branches:
+            - main
+jobs:
+    secondJob:
+        runs-on: ubuntu-latest
+        steps:
+            - name: first step
+              run: echo "This is my first step"
+            - name: good bye
+              run: |
+                echo "print good bye"
+                pwd
+                echo "workflow executed successfully"
+
