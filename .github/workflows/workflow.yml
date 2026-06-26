@@ -1,0 +1,14 @@
+name: pipeline
+on: workflow_dispatch
+jobs: 
+    first_job:
+        runs-on: ubuntu-latest
+        steps: 
+            - name: first step
+              run: echo "This is my first step"
+            - name: good bye
+              run: |
+                echo "print good bye"
+                pwd
+                echo "workflow executed successfully"
+                
