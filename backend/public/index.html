@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Quote Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 80px auto;
+      text-align: center;
+      color: #222;
+    }
+    #quote-text {
+      font-size: 1.3em;
+      min-height: 80px;
+    }
+    #quote-author {
+      font-style: italic;
+      color: #555;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Random Quote Generator</h1>
+
+  <div id="quote-text">Click the button to load a quote.</div>
+  <div id="quote-author"></div>
+
+  <button id="load-btn">Get Quote</button>
+
+  <script>
+    const btn = document.getElementById('load-btn');
+    const quoteText = document.getElementById('quote-text');
+    const quoteAuthor = document.getElementById('quote-author');
+
+    btn.addEventListener('click', async () => {
+      quoteText.textContent = 'Loading...';
+      quoteAuthor.textContent = '';
+
+      try {
+        const res = await fetch('/api/quote');
+        if (!res.ok) throw new Error('Request failed: ' + res.status);
+        const data = await res.json();
+        quoteText.textContent = '"' + data.text + '"';
+        quoteAuthor.textContent = '— ' + data.author;
+      } catch (err) {
+        quoteText.textContent = 'Error loading quote. Is the backend running?';
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

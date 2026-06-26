@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: quoteuser
+      POSTGRES_PASSWORD: quotepass
+      POSTGRES_DB: quotedb
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    restart: on-failure
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: quoteuser
+      DB_PASSWORD: quotepass
+      DB_NAME: quotedb
+      PORT: 3000
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
