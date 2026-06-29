@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: quote-app
+  namespace: argocd
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/v-rnoone/DevOps-Project-06.git
+    targetRevision: main
+    path: K8S
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: quote-app
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
