@@ -17,6 +17,8 @@ jobs:
           registryname: ${{ secrets.ACR_LOGIN_SERVER }}
           username: ${{ secrets.ACR_USER_NAME }}
           password: ${{ secrets.ACR_PASSWORD }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Push images to ACR
         uses: docker/build-push-action@v7
         with: 
