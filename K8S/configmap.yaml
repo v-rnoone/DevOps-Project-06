@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quote-app-config
+  namespace: quote-app
+data:
+  DB_HOST: "quote-db-service"
+  DB_PORT: "5432"
+  DB_NAME: "quotedb"
+  PORT: "3000"

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quote-backend
+  namespace: quote-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quote-backend
+  template:
+    metadata:
+      labels:
+        app: quote-backend
+    spec:
+      containers:
+        - name: quote-backend
+          image: quoteregistry.azurecr.io/quote-app-backend:7dbe0446bc24db9652cd8a918ddb488601ceca3f
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: quote-app-config
+            - secretRef:
+                name: quote-app-secret
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quote-backend-service
+  namespace: quote-app
+spec:
+  selector:
+    app: quote-backend
+  ports:
+    - port: 80
+      targetPort: 3000
+  type: LoadBalancer

@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quote-db
+  namespace: quote-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quote-db
+  template:
+    metadata:
+      labels:
+        app: quote-db
+    spec:
+      containers:
+        - name: quote-db
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: quote-app-config
+            - secretRef:
+                name: quote-app-secret
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: quote-app-secret
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: quote-app-secret
+                  key: DB_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: quote-app-config
+                  key: DB_NAME
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d/init.sql
+              subPath: init.sql
+      volumes:
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: quote-db-pvc
+        - name: init-script
+          configMap:
+            name: quote-db-init
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: quote-db-pvc
+  namespace: quote-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quote-db-service
+  namespace: quote-app
+spec:
+  selector:
+    app: quote-db
+  ports:
+    - port: 5432
+      targetPort: 5432
