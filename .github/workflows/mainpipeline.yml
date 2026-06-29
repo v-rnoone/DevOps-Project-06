@@ -1,10 +1,10 @@
 name: MainPipeline
-on: 
-  push:
-    branches:
-      - main
-    paths:
-      - 'backend/**'
+on: workflow_dispatch
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - 'backend/**'
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
