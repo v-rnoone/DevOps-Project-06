@@ -14,7 +14,7 @@ jobs:
       - name: login to ACR
         uses: azure/docker-login@v2
         with: 
-          registryname: ${{ secrets.ACR_LOGIN_SERVER }}
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
           username: ${{ secrets.ACR_USER_NAME }}
           password: ${{ secrets.ACR_PASSWORD }}
       - name: Set up Docker Buildx
