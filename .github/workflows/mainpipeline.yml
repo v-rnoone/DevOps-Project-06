@@ -39,7 +39,7 @@ jobs:
           token: ${{ secrets.MANIFEST_REPO_PAT }}
           path: manifests-repo
 
-      - name: Update image tag in backend.yaml
+      - name: Update image tag in backend.yaml in K8S
         run: |
           cd manifests-repo/K8S
           sed -i "s|image:.*quote-app-backend:.*|image: ${{ secrets.ACR_LOGIN_SERVER }}/quote-app-backend:${{ github.sha }}|" backend.yaml
