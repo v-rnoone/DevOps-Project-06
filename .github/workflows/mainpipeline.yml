@@ -35,7 +35,7 @@ jobs:
       - name: Checkout manifest repo
         uses: actions/checkout@v4
         with:
-          repository: v-rnoone/DevOps-Project-06.git
+          repository: v-rnoone/DevOps-Project-06
           token: ${{ secrets.MANIFEST_REPO_PAT }}
           path: manifests-repo
 
