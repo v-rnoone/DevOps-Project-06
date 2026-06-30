@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: quote-backend
-          image: quoteregistry.azurecr.io/quote-app-backend:b83a52502a273c1caf18dd78fa0e69dc3651d0e3
+          image: quoteregistry.azurecr.io/quote-app-backend:9c76a7ef5d0170291dea4579cd413dd1f5ad8eee
           ports:
             - containerPort: 3000
           envFrom:
